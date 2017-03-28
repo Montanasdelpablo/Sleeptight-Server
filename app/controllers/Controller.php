@@ -36,6 +36,16 @@ class Controller {
     //]);
   }
 
+  public function action($request, $response, $args){
+    // Sample data
+    $data = array('intent' => $args['intent'], 'who' => $args['uid']);
+    $newResponse = $response->withJson($data);
+    return $newResponse;
+    //return $this->view->render($response, 'index.html', [
+    //    'name' => '',
+    //]);
+  }
+
 }
 
 ?>

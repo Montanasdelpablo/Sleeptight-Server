@@ -24,3 +24,15 @@ Sample URL: http://localhost/sleeptight-server/hello/kees
 Sample output: {"intent":"Hello","to":"kees"}
 
 ```
+
+
+Return JSON with double Parameter
+
+```
+Pattern: localhost/sleeptight-server/{intent}/{uid}
+
+Sample URL: http://localhost/sleeptight-server/follow/423
+
+Sample output: {"intent":"follow","who":"423"}
+
+```
