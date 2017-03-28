@@ -36,3 +36,25 @@ Sample URL: http://localhost/sleeptight-server/follow/423
 Sample output: {"intent":"follow","who":"423"}
 
 ```
+
+Protected JSON Route with Masterkey
+
+```
+Pattern: localhost/sleeptight-server/{key}
+
+When given wrong Masterkey:
+
+Sample URL: http://localhost/sleeptight-server/asbasdds
+
+Sample output:
+{"success":false,"connected":false,"errors":{"key":"Wrong master key"}}
+
+When given correct Masterkey:
+
+Sample URL: http://localhost/sleeptight-server/YOUR_SECRET_CODE
+
+Sample output:
+{"success":true,"connected":true,"errors":false}
+
+
+```
