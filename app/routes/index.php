@@ -19,6 +19,6 @@ $app->get('/hello/{name}', 'Controller:hello');
 $app->get('/{intent}/{uid}', 'Controller:action');
 
 // Protected JSON (GET)
-$app->get('/{key}', 'Controller:protected');
+$app->get('/{key}', 'Controller:protect');
 
 ?>

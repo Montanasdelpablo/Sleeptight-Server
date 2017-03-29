@@ -47,7 +47,7 @@ class Controller {
     //]);
   }
 
-  public function protected($request, $response, $args){
+  public function protect($request, $response, $args){
     // Sample data
     if ($args['key'] == $this->masterkey){
       $data = array('success' => true, 'connected' => true, 'errors' => false);
