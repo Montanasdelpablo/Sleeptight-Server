@@ -48,6 +48,24 @@ class Controller {
     return $newResponse;
   }
 
+  public function gebruikers($request, $response){
+    // Sample data vanuit url
+    $data = $this->db->select("SELECT * FROM gebruiker");
+    // Response in JSON
+    $newResponse = $response->withJson($data);
+    // Return de response
+    return $newResponse;
+  }
+
+  public function gebruiker($request, $response, $args){
+    // Query gebruiker_id vanuit url
+    $data = $this->db->select("SELECT * FROM gebruiker WHERE gebruiker_id = :id", array(':id' => $args['uid']), true);
+    // Response in JSON
+    $newResponse = $response->withJson($data);
+    // Return de response
+    return $newResponse;
+  }
+
   public function protect($request, $response, $args){
     // Check voor meegegeven key
     if ($args['key'] == $this->masterkey){

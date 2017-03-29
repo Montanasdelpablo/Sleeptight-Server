@@ -58,3 +58,22 @@ Sample output:
 
 
 ```
+
+
+Gebruiker JSON Route
+
+```
+Pattern: localhost/sleeptight-server/api/gebruikers
+
+Sample output:
+[{"gebruiker_id":"1","voornaam":"Johan","achternaam":"Derkens","emailadres":"johanderkens@gmail.com"},{"gebruiker_id":"2","voornaam":"Gerda","achternaam":"Burka","emailadres":"gburkaas@gmail.com"},{"gebruiker_id":"3","voornaam":"Frederik","achternaam":"Oppel","emailadres":"foppel@gmail.com"}]
+
+Pattern: localhost/sleeptight-server/api/gebruiker/{uid}
+
+Sample URL: http://localhost/sleeptight-server/api/gebruiker/1
+
+Sample output:
+{"gebruiker_id":"1","voornaam":"Johan","achternaam":"Derkens","emailadres":"johanderkens@gmail.com"}
+
+
+```

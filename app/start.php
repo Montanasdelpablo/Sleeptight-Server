@@ -53,6 +53,13 @@ $container['Controller'] = function ($container) {
 
 
 
+require 'models/Database.php';
+
+$container['db'] = function($container) {
+  $dsn = $container->settings['db']['driver'] . ":host=" . $container->settings['db']['host'] . ";dbname=" . $container->settings['db']['database'];
+  return new Database($dsn, $container->settings['db']['username'], $container->settings['db']['password']);
+};
+
 
 // Run app
 $app->run();

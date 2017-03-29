@@ -14,11 +14,15 @@ $app->get('/', 'Controller:index');
 // 1 Parameter JSON (GET)
 $app->get('/hello/{name}', 'Controller:hello');
 
-
 // 2 Parameter JSON (GET)
-$app->get('/{intent}/{uid}', 'Controller:action');
+$app->get('test/{intent}/{uid}', 'Controller:action');
 
 // Protected JSON (GET)
 $app->get('/{key}', 'Controller:protect');
+
+// Alle gebruikers
+$app->get('/api/gebruikers', 'Controller:gebruikers');
+// Gebruiker volgens id
+$app->get('/api/gebruiker/{uid}', 'Controller:gebruiker');
 
 ?>
