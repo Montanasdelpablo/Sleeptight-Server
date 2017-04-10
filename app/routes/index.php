@@ -20,6 +20,9 @@ $app->get('test/{intent}/{uid}', 'Controller:action');
 // Protected JSON (GET)
 $app->get('/{key}', 'Controller:protect');
 
+//Auth
+$app->post('/api/auth', 'Controller:auth');
+
 // Alle gebruikers
 $app->get('/api/gebruikers', 'Controller:gebruikers');
 // Gebruiker volgens id

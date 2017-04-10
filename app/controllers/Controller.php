@@ -66,6 +66,31 @@ class Controller {
     return $newResponse;
   }
 
+  public function auth($request, $response, $args){
+    // Query gebruiker_id vanuit url
+    if ($request->isPost()){
+      $parsedBody = $request->getParsedBody();
+      $username = strtolower($parsedBody['username']);
+      $password = strtolower($parsedBody['password']);
+
+      $arr = $this->db->select("SELECT * FROM gebruiker WHERE username = :username AND password = :password", array(':username' => $username, ':password' => $password), true);
+      if(!empty($arr)){
+        $data = array("status" => "Success", "user" => array('id' => $arr['id'], 'token' => $arr['token'], 'username' => $arr['username'], 'name' => $arr['name'], 'surname' => $arr['surname']));
+        $newResponse = $response->withJson($data);
+        return $newResponse;
+      } else {
+        $data = array("error" => "404", "status" => "No users found for that credentials");
+        $newResponse = $response->withJson($data);
+        return $newResponse;
+      }
+    } else {
+      $data = array("error" => "Not a post method");
+      $newResponse = $response->withJson($data);
+      return $newResponse;
+    }
+
+  }
+
   public function protect($request, $response, $args){
     // Check voor meegegeven key
     if ($args['key'] == $this->masterkey){
