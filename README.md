@@ -2,59 +2,54 @@
 Serverside for Sleeptight. Using Slim Framework and PHP for fetching data from the database into JSON and inserting Senz2 responses from JSON into the SQL Database.
 
 
-Return JSON
+API Register Route
 
 ```
-Pattern: localhost/sleeptight-server/
+Pattern: localhost/sleeptight-server/api/register
 
-Sample URL: http://localhost/sleeptight-server/
+Make a post request to sample URL with the following data:
+activation, username, password, name (optional), surname (optional), email (optional)
 
-Sample Output: {"name":"Pablo","age":22}
+Sample URL: http://localhost/sleeptight-server/api/register
 
-```
+Sample output if required fields are entered:
+{"status": "Success"}
 
+Sample output if required fields are not entred:
+{"error": "404", "status": "Inserting went wrong/Not all required fields entered"}
 
-Return JSON with Parameter
-
-```
-Pattern: localhost/sleeptight-server/hello/{name}
-
-Sample URL: http://localhost/sleeptight-server/hello/kees
-
-Sample output: {"intent":"Hello","to":"kees"}
 
 ```
 
-
-Return JSON with double Parameter
-
-```
-Pattern: localhost/sleeptight-server/{intent}/{uid}
-
-Sample URL: http://localhost/sleeptight-server/follow/423
-
-Sample output: {"intent":"follow","who":"423"}
+API Auth Route
 
 ```
+Pattern: localhost/sleeptight-server/api/auth
 
-Protected JSON Route with Masterkey
+Make a post request to sample URL with the following data:
+username, password
 
-```
-Pattern: localhost/sleeptight-server/{key}
+Sample URL: http://localhost/sleeptight-server/api/auth
 
-When given wrong Masterkey:
 
-Sample URL: http://localhost/sleeptight-server/asbasdds
 
-Sample output:
-{"success":false,"connected":false,"errors":{"key":"Wrong master key"}}
+Sample output if required fields are entered:
+{
+  "status": "Success",
+  "user": {
+    "id": "11",
+    "token": "zyxwvutsrqponmlkjihgfedcba",
+    "username": "jenny",
+    "name": "Koekiemonster",
+    "surname": "Aapjes"
+  }
+}
 
-When given correct Masterkey:
-
-Sample URL: http://localhost/sleeptight-server/YOUR_SECRET_CODE
-
-Sample output:
-{"success":true,"connected":true,"errors":false}
+Sample output if required fields are not entred:
+{
+  "error": "404",
+  "status": "No users found for that credentials"
+}
 
 
 ```
