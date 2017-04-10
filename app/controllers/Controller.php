@@ -21,33 +21,6 @@ class Controller {
     }
   }
 
-  public function index($request, $response){
-    // Sample data
-    $data = array('name' => 'Pablo', 'age' => 22);
-    // Response in JSON
-    $newResponse = $response->withJson($data);
-    // Return de response
-    return $newResponse;
-  }
-
-  public function hello($request, $response, $args){
-    // Sample data vanuit url
-    $data = array('intent' => 'Hello', 'to' => $args['name']);
-    // Response in JSON
-    $newResponse = $response->withJson($data);
-    // Return de response
-    return $newResponse;
-  }
-
-  public function action($request, $response, $args){
-    // Sample data vanuit url
-    $data = array('intent' => $args['intent'], 'who' => $args['uid']);
-    // Response in JSON
-    $newResponse = $response->withJson($data);
-    // Return de response
-    return $newResponse;
-  }
-
   public function gebruikers($request, $response){
     // Sample data vanuit url
     $data = $this->db->select("SELECT * FROM gebruiker");
@@ -71,7 +44,7 @@ class Controller {
     if ($request->isPost()){
       $parsedBody = $request->getParsedBody();
       $username = strtolower($parsedBody['username']);
-      $password = strtolower($parsedBody['password']);
+      $password = $parsedBody['password'];
 
       $arr = $this->db->select("SELECT * FROM gebruiker WHERE username = :username AND password = :password", array(':username' => $username, ':password' => $password), true);
       if(!empty($arr)){
@@ -80,6 +53,64 @@ class Controller {
         return $newResponse;
       } else {
         $data = array("error" => "404", "status" => "No users found for that credentials");
+        $newResponse = $response->withJson($data);
+        return $newResponse;
+      }
+    } else {
+      $data = array("error" => "Not a post method");
+      $newResponse = $response->withJson($data);
+      return $newResponse;
+    }
+
+  }
+
+  public function register($request, $response, $args){
+    // Is request a post method?
+    if ($request->isPost()){
+      $parsedBody = $request->getParsedBody();
+      $activation = $parsedBody['activation'];
+      $username = strtolower($parsedBody['username']);
+      $password = $parsedBody['password'];
+      $name = empty($parsedBody['name']) ? '' : $parsedBody['name'];
+      $surname = empty($parsedBody['surname']) ? '' : $parsedBody['surname'];
+      $email = empty($parsedBody['email']) ? '' : $parsedBody['email'];
+
+      // Check if activation code is in table
+      $arr = $this->db->select("SELECT * FROM codes WHERE code = :code", array(':code' => $activation));
+
+      if(!empty($arr)){
+
+        // Create token for user
+        $arr2 = $this->db->select("SELECT * FROM token WHERE used = 0 LIMIT 1", array(), true);
+        $token = $arr2['token'];
+        $affectedrows = $this->db->update('token', array('used' => 1), array('token' => $token));
+        if (!affectedrows){
+          $data = array("error" => "404", "status" => "Token not updated correctly");
+          $newResponse = $response->withJson($data);
+          return $newResponse;
+        }
+        $this->db->insert('token', array('token' => md5(uniqid(rand(), true))));
+        // Prepare user with details to register
+        $user = array("username" => $username, "password" => $password, "name" => $name, "surname" => $surname, "email" => $email, "token" => $token);
+
+        // Insert into db
+        $id = $this->db->insert("gebruiker", $user);
+
+        // If returned id
+        if($id){
+          $data = array("status" => "Success");
+          $newResponse = $response->withJson($data);
+          return $newResponse;
+        }
+        // Inserting went wrong
+        else {
+          $data = array("error" => "404", "status" => "Inserting went wrong");
+          $newResponse = $response->withJson($data);
+          return $newResponse;
+        }
+      } else {
+        // Return false because no valid activation code
+        $data = array("error" => "404", "status" => "Not a valid activation code");
         $newResponse = $response->withJson($data);
         return $newResponse;
       }
