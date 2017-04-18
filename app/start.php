@@ -54,10 +54,15 @@ $container['Controller'] = function ($container) {
 
 
 require 'models/Database.php';
+require 'models/Senz2.php';
 
 $container['db'] = function($container) {
   $dsn = $container->settings['db']['driver'] . ":host=" . $container->settings['db']['host'] . ";dbname=" . $container->settings['db']['database'];
   return new Database($dsn, $container->settings['db']['username'], $container->settings['db']['password']);
+};
+
+$container['senz2'] = function($container){
+  return new Senz2();
 };
 
 

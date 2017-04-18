@@ -20,6 +20,17 @@ class Controller {
       return $this->container->{$property};
     }
   }
+  public function index($request, $response){
+    // Sample data vanuit url
+    $data = array('status' => 'server up and running!');
+
+    $resp = $this->senz2->getToken();
+    // Response in JSON
+    $newResponse = $response->withJson($resp);
+    // Return de response
+    return $newResponse;
+  }
+
 
   public function gebruikers($request, $response){
     // Sample data vanuit url
@@ -32,7 +43,7 @@ class Controller {
 
   public function gebruiker($request, $response, $args){
     // Query gebruiker_id vanuit url
-    $data = $this->db->select("SELECT * FROM gebruiker WHERE gebruiker_id = :id", array(':id' => $args['uid']), true);
+    $data = $this->db->select("SELECT * FROM gebruiker WHERE id = :id", array(':id' => $args['uid']), true);
     // Response in JSON
     $newResponse = $response->withJson($data);
     // Return de response
@@ -84,7 +95,7 @@ class Controller {
         $arr2 = $this->db->select("SELECT * FROM token WHERE used = 0 LIMIT 1", array(), true);
         $token = $arr2['token'];
         $affectedrows = $this->db->update('token', array('used' => 1), array('token' => $token));
-        if (!affectedrows){
+        if (!$affectedrows){
           $data = array("error" => "404", "status" => "Token not updated correctly");
           $newResponse = $response->withJson($data);
           return $newResponse;

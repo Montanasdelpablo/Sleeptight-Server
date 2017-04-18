@@ -11,6 +11,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 // Normal JSON (GET)
 
 // Register
+$app->get('/', 'Controller:index');
+
 $app->post('/api/register', 'Controller:register');
 
 //Auth
