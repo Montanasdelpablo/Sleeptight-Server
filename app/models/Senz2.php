@@ -32,10 +32,49 @@ class Senz2 {
       curl_setopt_array($curl, array(
           CURLOPT_RETURNTRANSFER => 1,
           CURLOPT_URL => 'https://apiv1.makesenz2.nl/oauth/v2/token',
-          CURLOPT_USERAGENT => 'Sample cURL Request',
+          CURLOPT_USERAGENT => 'Token request',
           CURLOPT_SSL_VERIFYPEER => false,
           CURLOPT_POST => 1,
           CURLOPT_POSTFIELDS => $data
+      ));
+
+      // Send the request & save response to $resp
+      $resp = curl_exec($curl);
+
+      // Curl error handling
+      if(!curl_exec($curl)){
+          die('Error: "' . curl_error($curl) . '" - Code: ' . curl_errno($curl));
+      }
+
+      // Close request to clear up some resources
+      curl_close($curl);
+
+      $resp = json_decode($resp);
+
+      //$resp->access_token
+      //$resp->refresh_token
+
+      return $resp;
+    }
+
+    public function getClientData($id, $token){
+
+      $url = 'https://apiv1.makesenz2.nl/api/customer/' . $id . '/sensors';
+
+
+      // Get cURL resource
+      $curl = curl_init();
+
+      $headers = array(
+        'Authorization: Bearer ' . $token  );
+
+      // Set some options - we are passing in a useragent too here
+      curl_setopt_array($curl, array(
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_URL => $url,
+          CURLOPT_USERAGENT => 'Client data request',
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_HTTPHEADER => $headers,
       ));
 
       // Send the request & save response to $resp

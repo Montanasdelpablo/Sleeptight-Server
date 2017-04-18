@@ -23,4 +23,7 @@ $app->get('/api/gebruikers', 'Controller:gebruikers');
 // Gebruiker volgens id
 $app->get('/api/gebruiker/{uid}', 'Controller:gebruiker');
 
+// Get client data
+$app->get('/api/client/{id}', 'Controller:client');
+
 ?>

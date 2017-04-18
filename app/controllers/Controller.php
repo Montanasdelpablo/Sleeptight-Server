@@ -24,9 +24,18 @@ class Controller {
     // Sample data vanuit url
     $data = array('status' => 'server up and running!');
 
-    $resp = $this->senz2->getToken();
     // Response in JSON
-    $newResponse = $response->withJson($resp);
+    $newResponse = $response->withJson($data);
+    // Return de response
+    return $newResponse;
+  }
+
+  public function client($request, $response, $args) {
+    $resp = $this->senz2->getToken();
+    $clientid = $args['id'];
+    $resp2 = $this->senz2->getClientData($clientid, $resp->access_token);
+    // Response in JSON
+    $newResponse = $response->withJson($resp2);
     // Return de response
     return $newResponse;
   }
