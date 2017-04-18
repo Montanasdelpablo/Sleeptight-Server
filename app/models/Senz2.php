@@ -96,6 +96,54 @@ class Senz2 {
       return $resp;
     }
 
+    public function getSensorData($id, $token, $from, $to){
+
+      // Error handling
+      if(!empty($from) && !empty($to)){
+          $url = "https://apiv1.makesenz2.nl/api/sensor/" . $id ."/data/" . $from . "/" . $to . "";
+      } else if (!empty($id) && !empty($token)){
+          $from = '2017-03-0114:00:00';
+          $to = gmdate("Y-m-d\TH:i:s\Z");
+          $url = "https://apiv1.makesenz2.nl/api/sensor/" . $id ."/data/" . $from . "/" . $to . "";
+      } else {
+        $resp = array('status' => 'ERROR', 'description' => 'Parameters not filled in right');
+        return $resp;
+      }
+
+        // Get cURL resource
+      $curl = curl_init();
+
+      $headers = array(
+        'Authorization: Bearer ' . $token  );
+
+      // Set some options - we are passing in a useragent too here
+      curl_setopt_array($curl, array(
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_URL => $url,
+          CURLOPT_USERAGENT => 'Client data request',
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_HTTPHEADER => $headers,
+      ));
+
+      // Send the request & save response to $resp
+      $resp = curl_exec($curl);
+
+      // Curl error handling
+      if(!curl_exec($curl)){
+          die('Error: "' . curl_error($curl) . '" - Code: ' . curl_errno($curl));
+      }
+
+      // Close request to clear up some resources
+      curl_close($curl);
+
+      $resp = json_decode($resp);
+
+      //$resp->access_token
+      //$resp->refresh_token
+
+      return $resp;
+    }
+
 
 }
 
