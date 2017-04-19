@@ -22,7 +22,7 @@ class Controller {
   }
   public function index($request, $response){
     // Sample data vanuit url
-    $data = array('status' => 'server up and running!');
+    $data = array('status' => 'server up and running!', 'curl' => curl_version());
     // Response in JSON
     $newResponse = $response->withJson($data);
     // Return de response
@@ -55,6 +55,40 @@ class Controller {
 
     // Use token to fetch client data with client id ( sensor id, access_token, from and to ('2016-01-02 14:00:00', '2018-04-02 14:00:00'))
     $resp2 = $this->senz2->getSensorData($sensorid, $resp->access_token);
+
+    // Response in JSON
+    $newResponse = $response->withJson($resp2);
+
+    // Return de response
+    return $newResponse;
+  }
+
+  public function lastweek($request, $response, $args) {
+    // Get id from url param
+    $sensorid = $args['id'];
+
+    // Get token through Senz2
+    $resp = $this->senz2->getToken();
+
+    // Use token to fetch client data with client id ( sensor id, access_token, from and to ('2016-01-02 14:00:00', '2018-04-02 14:00:00'))
+    $resp2 = $this->senz2->getSensorLastWeek($sensorid, $resp->access_token);
+
+    // Response in JSON
+    $newResponse = $response->withJson($resp2);
+
+    // Return de response
+    return $newResponse;
+  }
+
+  public function lastday($request, $response, $args) {
+    // Get id from url param
+    $sensorid = $args['id'];
+
+    // Get token through Senz2
+    $resp = $this->senz2->getToken();
+
+    // Use token to fetch client data with client id ( sensor id, access_token, from and to ('2016-01-02 14:00:00', '2018-04-02 14:00:00'))
+    $resp2 = $this->senz2->getSensorLastDay($sensorid, $resp->access_token);
 
     // Response in JSON
     $newResponse = $response->withJson($resp2);

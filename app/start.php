@@ -32,8 +32,6 @@ $container = $app->getContainer();
 // Require routes and views
 
 //require 'views.php';
-require 'routes.php';
-
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
@@ -45,6 +43,10 @@ $app->add(function ($req, $res, $next) {
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
+
+require 'routes.php';
+
+
 
 
 // Make capsule from Eloquent for Database
